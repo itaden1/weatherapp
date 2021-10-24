@@ -10,15 +10,25 @@
 export interface IWeatherData {
   coord: ICoord;
   weather: Array<Record<string, unknown>>;
-  main: Record<string, unknown>;
+  main: ImainWeatherinfo;
   visibility: number;
   wind: Record<string, unknown>;
   clouds: Record<string, unknown>;
-  sys: Record<string, unknown>;
-  name: string
+  sys: ISystem;
+  name: string;
+  dt: number;
+}
+
+interface ISystem {
+  country: string
 }
 
 interface ICoord {
   lon: number;
   lat: number
+}
+
+interface ImainWeatherinfo {
+  temp: number;
+  feels_like: number;
 }

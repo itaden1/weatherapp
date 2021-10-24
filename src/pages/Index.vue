@@ -1,11 +1,19 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <CurrentWeatherComponent :data="currentWeather"></CurrentWeatherComponent>
-  </q-page>
+  <q-img
+    src="https://placeimg.com/500/300/nature"
+    :fit="mode"
+    style="position: initial"
+  >
+    <q-page class="row items-center justify-evenly">
+      <CurrentWeatherComponent
+        :weather="getCurrentWeather()"
+      ></CurrentWeatherComponent>
+    </q-page>
+  </q-img>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 
 import CurrentWeatherComponent from 'components/CurrentWeatherComponent.vue';
 import { IWeatherData } from 'src/components/models';
@@ -54,17 +62,14 @@ export default defineComponent({
   name: 'PageIndex',
   components: { CurrentWeatherComponent },
   setup() {
-    const currentWeather = ref({});
-
-    const getCurrentWeather = () => {
-      console.log('foo');
-      currentWeather.value = testData as IWeatherData;
+    // const currentWeather = ref({});
+    const mode = 'cover';
+    const getCurrentWeather = (): IWeatherData => {
+      // currentWeather.value = testData as IWeatherData;
+      return testData as IWeatherData;
     };
 
-    onMounted(getCurrentWeather);
-
-    console.log(currentWeather);
-    return { currentWeather, getCurrentWeather };
+    return { mode, getCurrentWeather };
   },
 });
 </script>
