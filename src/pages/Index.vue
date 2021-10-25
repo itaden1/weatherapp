@@ -1,9 +1,5 @@
 <template>
-  <q-img
-    src="https://placeimg.com/500/300/nature"
-    :fit="mode"
-    style="position: initial"
-  >
+  <q-img src="/img/warm-and-sunny1.jpg" :fit="mode" style="position: initial">
     <q-page class="row items-center justify-evenly">
       <CurrentWeatherComponent
         :weather="getCurrentWeather()"
@@ -13,7 +9,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
+import { useQuasar } from 'quasar';
 
 import CurrentWeatherComponent from 'components/CurrentWeatherComponent.vue';
 import { IWeatherData } from 'src/components/models';
@@ -63,7 +60,23 @@ export default defineComponent({
   components: { CurrentWeatherComponent },
   setup() {
     // const currentWeather = ref({});
+    const $q = useQuasar();
     const mode = 'cover';
+
+    const getLocation = async () => {
+      if ($q.platform.is.cordova) {
+        // do cordova get geo coords
+      } else if ($q.platform.is.electron) {
+        // do desktop get geo coords
+      } else {
+        await new Promise((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject)
+        );
+      }
+    };
+
+    onMounted(getLocation);
+
     const getCurrentWeather = (): IWeatherData => {
       // currentWeather.value = testData as IWeatherData;
       return testData as IWeatherData;
