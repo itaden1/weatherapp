@@ -4,6 +4,7 @@
       <CurrentWeatherComponent
         :weather="getCurrentWeather()"
       ></CurrentWeatherComponent>
+      <WeeklyWeatherComponent></WeeklyWeatherComponent>
     </q-page>
   </q-img>
 </template>
@@ -13,6 +14,8 @@ import { defineComponent, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
 
 import CurrentWeatherComponent from 'components/CurrentWeatherComponent.vue';
+import WeeklyWeatherComponent from 'components/WeeklyWeatherComponent.vue';
+
 import { IWeatherData } from 'src/components/models';
 
 const testData = {
@@ -57,7 +60,7 @@ const testData = {
 
 export default defineComponent({
   name: 'PageIndex',
-  components: { CurrentWeatherComponent },
+  components: { CurrentWeatherComponent, WeeklyWeatherComponent },
   setup() {
     // const currentWeather = ref({});
     const $q = useQuasar();

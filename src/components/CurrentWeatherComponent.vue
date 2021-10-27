@@ -4,15 +4,36 @@
     style="background-color: rgba(0, 0, 0, 0.5)"
   >
     <q-icon name="img:icons/day-cropped.svg" style="font-size: 8em" />
-    <h2 class="temp">{{ Math.trunc(weatherd.main.temp) }}&#176;</h2>
-    <h5 class="description">{{ weatherd.weather[0].description }}</h5>
-    <p>Feels like: {{ feelsLike }}&#176;</p>
-    <p>
+    <div class="q-pa-md">
+      <div class="row q-gutter-x-lg">
+        <div class="column">
+          <h2 class="q-mb-none q-mt-none q-pl-md">
+            {{ Math.trunc(weatherData.main.temp) }}&#176;
+          </h2>
+        </div>
+        <div class="column">
+          <p class="q-my-none text-left">
+            Min: {{ Math.trunc(weatherData.main.temp_min) }}&#176;
+          </p>
+          <p class="q-my-none text-left">
+            Max: {{ Math.trunc(weatherData.main.temp_max) }}&#176;
+          </p>
+          <p class="q-my-none text-left">
+            Feels like: {{ Math.trunc(weatherData.main.temp) }}&#176;
+          </p>
+        </div>
+      </div>
+      <h5 class="q-mt-md q-mb-sm">{{ weatherData.weather[0].description }}</h5>
+    </div>
+    <q-separator class="bg-dark-separator q-mb-lg" />
+    <p class="text-grey-4">
       <span>{{ theDate }}<br />{{ theTime }}</span>
     </p>
-    <p>{{ city }}, {{ country }}</p>
+    <p class="text-grey-4">
+      {{ weatherData.name }}, {{ weatherData.sys.country }}
+    </p>
   </q-card>
-  <!-- <div style="color: black">{{ weatherd }}</div> -->
+  <!-- <div style="color: black">{{ weatherData }}</div> -->
 </template>
 
 <script lang="ts">
@@ -26,26 +47,16 @@ export default defineComponent({
     weather: Object,
   },
   setup(props) {
-    const weatherd = props.weather as IWeatherData;
-    const temp = Math.trunc(weatherd.main.temp);
-    const description = weatherd.weather[0].description;
-    const feelsLike = Math.trunc(weatherd.main.feels_like);
+    const weatherData = props.weather as IWeatherData;
 
     const theDate = date.formatDate(
-      new Date(weatherd.dt * 1000),
-      'ddd, Do MMM, YYYY'
+      new Date(weatherData.dt * 1000),
+      'ddd, Do MMMM'
     );
-    const theTime = date.formatDate(new Date(weatherd.dt * 1000), 'H:m');
-    const city = weatherd.name;
-    const country = weatherd.sys.country;
+    const theTime = date.formatDate(new Date(weatherData.dt * 1000), 'hh:m a');
 
     return {
-      weatherd,
-      temp,
-      description,
-      feelsLike,
-      city,
-      country,
+      weatherData,
       theDate,
       theTime,
     };
@@ -64,15 +75,5 @@ export default defineComponent({
   width: 120px;
   height: 120px;
   margin: 0 auto;
-}
-.description {
-  margin: 0;
-}
-.temp {
-  padding-left: 20px;
-}
-h2 {
-  padding: 0;
-  margin: 1rem 0 0 0;
 }
 </style>
