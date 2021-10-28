@@ -5,7 +5,7 @@
   >
     <q-icon name="img:icons/day-cropped.svg" style="font-size: 8em" />
     <div class="q-pa-md">
-      <div class="row q-gutter-x-lg">
+      <div class="row justify-center q-gutter-x-lg items-center">
         <div class="column">
           <h2 class="q-mb-none q-mt-none q-pl-md">
             {{ Math.trunc(weatherData.main.temp) }}&#176;
@@ -37,8 +37,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { IWeatherData } from './models';
+import { defineComponent, computed } from 'vue';
+import { IWeatherData } from '../models/weatherModel';
 import { date } from 'quasar';
 
 export default defineComponent({
@@ -49,11 +49,12 @@ export default defineComponent({
   setup(props) {
     const weatherData = props.weather as IWeatherData;
 
-    const theDate = date.formatDate(
-      new Date(weatherData.dt * 1000),
-      'ddd, Do MMMM'
+    const theDate = computed(() =>
+      date.formatDate(new Date(weatherData.dt * 1000), 'ddd, Do MMMM')
     );
-    const theTime = date.formatDate(new Date(weatherData.dt * 1000), 'hh:m a');
+    const theTime = computed(() =>
+      date.formatDate(new Date(weatherData.dt * 1000), 'hh:m a')
+    );
 
     return {
       weatherData,
@@ -76,4 +77,7 @@ export default defineComponent({
   height: 120px;
   margin: 0 auto;
 }
+// .centered-div {
+//   max-width: 22rem;
+// }
 </style>
