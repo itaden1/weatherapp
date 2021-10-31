@@ -8,56 +8,66 @@
       <div class="row justify-center q-gutter-x-lg items-center">
         <div class="column">
           <h2 class="q-mb-none q-mt-none q-pl-md">
-            {{ Math.trunc(weatherData.main.temp) }}&#176;
+            {{ Math.trunc(weatherData.current.temp) }}&#176;
           </h2>
         </div>
         <div class="column">
           <p class="q-my-none text-left">
-            Min: {{ Math.trunc(weatherData.main.temp_min) }}&#176;
+            <!-- Min: {{ Math.trunc(weatherData.current.temp_min) }}&#176; -->
           </p>
           <p class="q-my-none text-left">
-            Max: {{ Math.trunc(weatherData.main.temp_max) }}&#176;
+            <!-- Max: {{ Math.trunc(weatherData.currentWeather.temp_max) }}&#176; -->
           </p>
           <p class="q-my-none text-left">
-            Feels like: {{ Math.trunc(weatherData.main.temp) }}&#176;
+            Feels like:
+            {{ Math.trunc(weatherData.current.temp) }}&#176;
           </p>
         </div>
       </div>
-      <h5 class="q-mt-md q-mb-sm">{{ weatherData.weather[0].description }}</h5>
+      <h5 class="q-mt-md q-mb-sm">
+        {{ weatherData.current.weather[0].description }}
+      </h5>
     </div>
     <q-separator class="bg-dark-separator q-mb-lg" />
     <p class="text-grey-4">
       <span>{{ theDate }}<br />{{ theTime }}</span>
     </p>
     <p class="text-grey-4">
-      {{ weatherData.name }}, {{ weatherData.sys.country }}
+      {{ weatherData.timezone }}
     </p>
   </q-card>
+
   <!-- <div style="color: black">{{ weatherData }}</div> -->
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { PropType, defineComponent, computed, toRefs } from 'vue';
 import { IWeatherData } from '../models/weatherModel';
 import { date } from 'quasar';
 
 export default defineComponent({
   name: 'CurrentWeatherComponent',
   props: {
-    weather: Object,
+    weatherData: {
+      type: Object as PropType<IWeatherData>,
+      required: true,
+    },
   },
   setup(props) {
-    const weatherData = props.weather as IWeatherData;
+    const weatherData = toRefs(props.weatherData);
+    // const dataIsReady = ref(false);
 
     const theDate = computed(() =>
-      date.formatDate(new Date(weatherData.dt * 1000), 'ddd, Do MMMM')
+      date.formatDate(
+        new Date(weatherData.current.value.dt * 1000),
+        'ddd, Do MMMM'
+      )
     );
     const theTime = computed(() =>
-      date.formatDate(new Date(weatherData.dt * 1000), 'hh:m a')
+      date.formatDate(new Date(weatherData.current.value.dt * 1000), 'hh:m a')
     );
 
     return {
-      weatherData,
       theDate,
       theTime,
     };

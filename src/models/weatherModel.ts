@@ -1,36 +1,65 @@
-// export interface Todo {
-//   id: number;
-//   content: string;
-// }
-
-// export interface Meta {
-//   totalCount: number;
-// }
 
 export interface IWeatherData {
-  coord: ICoord;
-  weather: Array<Record<string, unknown>>;
-  main: ImainWeatherinfo;
-  visibility: number;
-  wind: Record<string, unknown>;
-  clouds: Record<string, unknown>;
-  sys: ISystem;
-  name: string;
+  current: ICurrentWeather;
+  daily: Array<IDailyWeather>;
+  timezone: string;
+  // hourlyWeather: Array<IHourlyWeather>;
+}
+
+interface IDailyWeather {
+  clouds: number;
+  dew_point: number;
   dt: number;
+  feels_like: IDailyFeelsLike;
+  humidity: number;
+  moon_phase: number;
+  moonrise: number;
+  moonset: number;
+  pop: number;
+  pressure: number;
+  sunrise: number;
+  sunset: number;
+  temp: IDailyTemperature;
+  uvi: number;
+  weather: Array<IDailyWeather>;
+  wind_deg: number;
+  wind_gust: number;
+  wind_speed: number;
 }
 
-interface ISystem {
-  country: string
+interface IDailyTemperature {
+  day: number;
+  eve: number;
+  max: number;
+  min: number;
+  morn: number;
+  night: number;
 }
 
-interface ICoord {
-  lon: number;
-  lat: number
+interface IDailyFeelsLike {
+  day: number;
+  eve: number;
+  morn: number;
+  night: number;
 }
 
-interface ImainWeatherinfo {
-  temp: number;
+interface ICurrentWeather {
+  weather: Array<IWeatherObject>;
+  clouds : number;
+  dew_point: number;
+  dt: number;
   feels_like: number;
-  temp_min: number;
-  temp_max: number;
+  humidity: number;
+  pressure: number;
+  sunrise: number;
+  sunset: number;
+  temp: number;
+  uvi: number;
+  visiblility:number;
+}
+
+interface IWeatherObject {
+  description: string;
+  icon: string;
+  main: string;
 }
