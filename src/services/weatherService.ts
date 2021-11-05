@@ -1,34 +1,13 @@
 import axios from 'axios';
-import { useQuasar } from 'quasar';
 
 
 import { IWeatherData } from 'src/models/weatherModel';
 
 
 export const getGeoCoords = async (): Promise<GeolocationPosition> => {
-  const $q = useQuasar();
-  // return new Promise((resolve: PositionCallback, reject: PositionErrorCallback) =>
-  //   navigator.geolocation.getCurrentPosition(resolve, reject)
-  // );
-  if ($q.platform.is.cordova) {
-      // do cordova get geo coords
-      return new Promise((resolve: PositionCallback, reject: PositionErrorCallback) => {
-        document.addEventListener('deviceready', () => {
-          console.log('foo');
-          navigator.geolocation.getCurrentPosition(resolve, reject)
-        }, false);
-      })
-  } else {
-    return new Promise((resolve: PositionCallback, reject: PositionErrorCallback) =>
-      navigator.geolocation.getCurrentPosition(resolve, reject)
+  return new Promise((resolve: PositionCallback, reject: PositionErrorCallback) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject)
   );
-  }
-  // else if ($q.platform.is.electron) {
-  //   // do desktop get geo coords
-  // } else {
-  //   // web based geo coords
-
-  // }
 }
 
 export const getWeatherdata = async (

@@ -21,10 +21,11 @@ interface IDailyWeather {
   sunset: number;
   temp: IDailyTemperature;
   uvi: number;
-  weather: Array<IDailyWeather>;
+  weather: Array<IWeatherObject>;
   wind_deg: number;
   wind_gust: number;
   wind_speed: number;
+  rain: number;
 }
 
 interface IDailyTemperature {

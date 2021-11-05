@@ -13,12 +13,6 @@
         </div>
         <div class="column">
           <p class="q-my-none text-left">
-            <!-- Min: {{ Math.trunc(weatherData.current.temp_min) }}&#176; -->
-          </p>
-          <p class="q-my-none text-left">
-            <!-- Max: {{ Math.trunc(weatherData.currentWeather.temp_max) }}&#176; -->
-          </p>
-          <p class="q-my-none text-left">
             Feels like:
             {{ Math.trunc(weatherData.current.temp) }}&#176;
           </p>
@@ -36,8 +30,6 @@
       {{ weatherData.timezone }}
     </p>
   </q-card>
-
-  <!-- <div style="color: black">{{ weatherData }}</div> -->
 </template>
 
 <script lang="ts">
@@ -55,7 +47,6 @@ export default defineComponent({
   },
   setup(props) {
     const weatherData = toRefs(props.weatherData);
-    // const dataIsReady = ref(false);
 
     const theDate = computed(() =>
       date.formatDate(
@@ -87,7 +78,4 @@ export default defineComponent({
   height: 120px;
   margin: 0 auto;
 }
-// .centered-div {
-//   max-width: 22rem;
-// }
 </style>

@@ -5,13 +5,14 @@
         <CurrentWeatherComponent
           :weatherData="currentWeather"
         ></CurrentWeatherComponent>
-        <WeeklyWeatherComponent></WeeklyWeatherComponent>
+        <WeeklyWeatherComponent :weatherData="currentWeather">
+        </WeeklyWeatherComponent>
       </div>
       <div v-else>
         <ConfirmGeoDialogue
           v-on:confirmed="getCurrentWeather"
         ></ConfirmGeoDialogue>
-        <q-spinner-pie color="primary" size="5em" />
+        <q-spinner-pie color="primary" size="8em" />
       </div>
     </q-page>
   </q-img>
@@ -19,7 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { Dialog, useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
 import { getGeoCoords, getWeatherdata } from '../services/weatherService';
 import CurrentWeatherComponent from 'components/CurrentWeatherComponent.vue';
 import WeeklyWeatherComponent from 'components/WeeklyWeatherComponent.vue';
@@ -37,25 +38,44 @@ export default defineComponent({
     const weatherLoaded = ref(false);
     const mode = 'cover';
     const $q = useQuasar();
-    const getLocation = async (): Promise<GeolocationCoordinates> => {
-      const location: GeolocationPosition = await getGeoCoords()
-        .then((loc) => loc)
-        .catch(() => {
+
+    const getLocation = async (): Promise<GeolocationCoordinates | null> => {
+      const coords: GeolocationCoordinates | null = await getGeoCoords()
+        .then((loc) => loc.coords)
+        .catch((err: Error) => {
           $q.dialog({
-            title: 'Alert',
-            message: 'Could not get location!',
+            title: `${err.name}`,
+            message: `${err.message}`,
           });
+          return null;
         });
-      return location.coords;
+      return coords;
     };
 
     const getCurrentWeather = async () => {
       const coords = await getLocation();
-      await getWeatherdata(coords.latitude, coords.longitude).then(
-        (res) => (currentWeather.value = res)
-      );
-      console.log(currentWeather.value);
-      weatherLoaded.value = true;
+      if (coords != null) {
+        await getWeatherdata(coords.latitude, coords.longitude).then(
+          (res) => (currentWeather.value = res)
+        );
+        console.log(currentWeather.value);
+        weatherLoaded.value = true;
+      } else {
+        console.log('no weather data');
+        $q.dialog({
+          title: 'Alert',
+          message: 'Some message',
+        })
+          .onOk(() => {
+            // console.log('OK')
+          })
+          .onCancel(() => {
+            // console.log('Cancel')
+          })
+          .onDismiss(() => {
+            // console.log('I am triggered on both OK and Cancel')
+          });
+      }
     };
 
     return {
