@@ -1,14 +1,18 @@
 import axios from 'axios';
-
+// import { Quasar } from 'quasar'
 
 import { IWeatherData } from 'src/models/weatherModel';
 
-
-export const getGeoCoords = async (): Promise<GeolocationPosition> => {
-  return new Promise((resolve: PositionCallback, reject: PositionErrorCallback) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject)
-  );
-}
+// export const getGeoCoords = async (): Promise<GeolocationPosition> => {
+//   if (Quasar()) {
+//     return new Promise((resolve: PositionCallback, reject: PositionErrorCallback) =>
+//       navigator.geolocation.getCurrentPosition(resolve, reject)
+//   );
+//   }
+//   return new Promise((resolve: PositionCallback, reject: PositionErrorCallback) =>
+//     navigator.geolocation.getCurrentPosition(resolve, reject)
+//   );
+// }
 
 export const getWeatherdata = async (
   latitude: number, 

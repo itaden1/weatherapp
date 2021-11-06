@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { getGeoCoords, getWeatherdata } from '../services/weatherService';
+import { getWeatherdata } from '../services/weatherService';
 import CurrentWeatherComponent from 'components/CurrentWeatherComponent.vue';
 import WeeklyWeatherComponent from 'components/WeeklyWeatherComponent.vue';
 import ConfirmGeoDialogue from 'components/ConfirmGeoDialoge.vue';
@@ -39,6 +39,18 @@ export default defineComponent({
     const mode = 'cover';
     const $q = useQuasar();
 
+    const getGeoCoords = async (): Promise<GeolocationPosition> => {
+      if ($q.cordova) {
+        return new Promise(
+          (resolve: PositionCallback, reject: PositionErrorCallback) =>
+            navigator.geolocation.getCurrentPosition(resolve, reject)
+        );
+      }
+      return new Promise(
+        (resolve: PositionCallback, reject: PositionErrorCallback) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject)
+      );
+    };
     const getLocation = async (): Promise<GeolocationCoordinates | null> => {
       const coords: GeolocationCoordinates | null = await getGeoCoords()
         .then((loc) => loc.coords)
